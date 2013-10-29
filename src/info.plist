@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>bundleid</key>
+	<string>com.markokaestner.tags</string>
+	<key>connections</key>
+	<dict>
+		<key>36ACFBC8-4D15-46AB-974A-855FE1B235D5</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>468B3007-566D-4B7B-8C4E-49AFA9FD81B7</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>5DB6D31E-F533-4F44-ADDD-F01C7A541C75</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>BB27C26A-F372-4574-B306-B6D0AD56DB46</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>68588082-968F-48CF-8D3D-40BD183AF368</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>01C3A96B-1D1F-445B-B20C-37BDADCC9C33</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>86B3A01A-20B5-408A-AF1C-9345BCD457F5</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>468B3007-566D-4B7B-8C4E-49AFA9FD81B7</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+		<key>BB27C26A-F372-4574-B306-B6D0AD56DB46</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>CF1DA4EE-534C-4CAE-81E7-883C6BD0510D</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+		</array>
+	</dict>
+	<key>createdby</key>
+	<string>Marko Kaestner (@markokaestner)</string>
+	<key>description</key>
+	<string>Manage your Mavericks Tags with Alfred</string>
+	<key>disabled</key>
+	<false/>
+	<key>name</key>
+	<string>Mavericks Tags</string>
+	<key>objects</key>
+	<array>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>. workflowHandler.sh
+setPref "file" "{query}" 0
+/usr/bin/osascript -e "tell application \"Alfred 2\" to search \".tag\""
+</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>468B3007-566D-4B7B-8C4E-49AFA9FD81B7</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>acceptsmulti</key>
+				<false/>
+				<key>filetypes</key>
+				<array/>
+				<key>name</key>
+				<string>Manage Tags</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.action</string>
+			<key>uid</key>
+			<string>36ACFBC8-4D15-46AB-974A-855FE1B235D5</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>action</key>
+				<integer>0</integer>
+				<key>argument</key>
+				<integer>1</integer>
+				<key>hotkey</key>
+				<integer>17</integer>
+				<key>hotmod</key>
+				<integer>786432</integer>
+				<key>hotstring</key>
+				<string>T</string>
+				<key>leftcursor</key>
+				<false/>
+				<key>modsmode</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.trigger.hotkey</string>
+			<key>uid</key>
+			<string>86B3A01A-20B5-408A-AF1C-9345BCD457F5</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>keyword</key>
+				<string>.tag</string>
+				<key>script</key>
+				<string>. workflowHandler.sh
+
+RANDOM=$(date +%s)
+QUERY="{query}"
+USERFILE=$(getPref "file" 0)
+FILETAGS=$(./tag -N -l "$USERFILE")
+
+addResult "${RANDOM}" "" "${USERFILE##*/}" "${USERFILE%/*}" "info.png" "no" ""
+addResult "${RANDOM}" "add ${QUERY#add }" "Add Tag ${QUERY#add }" "Enter Tag Name" "add.png" "yes" ""
+
+OLDIFS="$IFS"
+IFS=,
+
+TAGLIST=( $FILETAGS )
+for T in "${TAGLIST[@]}"; do 
+	addResult "${RANDOM}" "del $T" "$T" "Delete Tag" "del.png" "yes" ""
+done
+
+IFS="$OLDIFS"
+
+getXMLResults</string>
+				<key>subtext</key>
+				<string>Show, Add, Remove Tags</string>
+				<key>title</key>
+				<string>Manage File/Folder Tags</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>5DB6D31E-F533-4F44-ADDD-F01C7A541C75</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>. workflowHandler.sh
+
+QUERY="{query}"
+FUNC=${QUERY:0:3}
+TAG=${QUERY:4}
+
+USERFILE=$(getPref "file" 0)
+
+if [ -z "$TAG" ]; then
+	/usr/bin/osascript -e "tell application \"Alfred 2\" to search \".tag $QUERY\""
+else
+	case "$FUNC" in
+		add)
+			./tag -a $TAG "$USERFILE" 2&gt;&amp;1 | tee workflow.log
+			echo "Tag $TAG added to file ${USERFILE##*/}."
+			;;
+		del)
+			./tag -r $TAG "$USERFILE" 2&gt;&amp;1 | tee workflow.log
+			echo "Tag $TAG removed from file ${USERFILE##*/}"
+			;;
+	esac
+	/usr/bin/osascript -e "tell application \"Alfred 2\" to search \".tag\""
+fi</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>BB27C26A-F372-4574-B306-B6D0AD56DB46</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>lastpathcomponent</key>
+				<false/>
+				<key>onlyshowifquerypopulated</key>
+				<true/>
+				<key>output</key>
+				<integer>0</integer>
+				<key>removeextension</key>
+				<false/>
+				<key>sticky</key>
+				<false/>
+				<key>text</key>
+				<string>{query}</string>
+				<key>title</key>
+				<string>Mavericks Tags</string>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.output.notification</string>
+			<key>uid</key>
+			<string>CF1DA4EE-534C-4CAE-81E7-883C6BD0510D</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>type</key>
+			<string>alfred.workflow.action.revealfile</string>
+			<key>uid</key>
+			<string>01C3A96B-1D1F-445B-B20C-37BDADCC9C33</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>anchorfields</key>
+				<true/>
+				<key>daterange</key>
+				<integer>0</integer>
+				<key>fields</key>
+				<array>
+					<dict>
+						<key>field</key>
+						<string>kMDItemUserTags</string>
+						<key>not</key>
+						<false/>
+						<key>split</key>
+						<true/>
+						<key>value</key>
+						<string>{query}</string>
+						<key>words</key>
+						<true/>
+					</dict>
+				</array>
+				<key>includesystem</key>
+				<false/>
+				<key>keyword</key>
+				<string>.tagged</string>
+				<key>scopes</key>
+				<array/>
+				<key>subtext</key>
+				<string>Enter Tag Name</string>
+				<key>title</key>
+				<string>Search Files/Folders by Tag</string>
+				<key>types</key>
+				<array/>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.filefilter</string>
+			<key>uid</key>
+			<string>68588082-968F-48CF-8D3D-40BD183AF368</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+	</array>
+	<key>readme</key>
+	<string></string>
+	<key>uidata</key>
+	<dict>
+		<key>01C3A96B-1D1F-445B-B20C-37BDADCC9C33</key>
+		<dict>
+			<key>ypos</key>
+			<real>380</real>
+		</dict>
+		<key>36ACFBC8-4D15-46AB-974A-855FE1B235D5</key>
+		<dict>
+			<key>ypos</key>
+			<real>10</real>
+		</dict>
+		<key>468B3007-566D-4B7B-8C4E-49AFA9FD81B7</key>
+		<dict>
+			<key>ypos</key>
+			<real>10</real>
+		</dict>
+		<key>5DB6D31E-F533-4F44-ADDD-F01C7A541C75</key>
+		<dict>
+			<key>ypos</key>
+			<real>260</real>
+		</dict>
+		<key>68588082-968F-48CF-8D3D-40BD183AF368</key>
+		<dict>
+			<key>ypos</key>
+			<real>380</real>
+		</dict>
+		<key>86B3A01A-20B5-408A-AF1C-9345BCD457F5</key>
+		<dict>
+			<key>ypos</key>
+			<real>130</real>
+		</dict>
+		<key>BB27C26A-F372-4574-B306-B6D0AD56DB46</key>
+		<dict>
+			<key>ypos</key>
+			<real>260</real>
+		</dict>
+		<key>CF1DA4EE-534C-4CAE-81E7-883C6BD0510D</key>
+		<dict>
+			<key>ypos</key>
+			<real>260</real>
+		</dict>
+	</dict>
+	<key>webaddress</key>
+	<string>http://markokaestner.com</string>
+</dict>
+</plist>
