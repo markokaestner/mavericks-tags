@@ -6,6 +6,25 @@
 	<string>com.markokaestner.tags</string>
 	<key>connections</key>
 	<dict>
+		<key>15A2D89F-ABA0-4170-8A95-71E3057E8F47</key>
+		<array>
+			<dict>
+				<key>destinationuid</key>
+				<string>51B04FA3-154E-477F-8ECD-3142D89EBA0C</string>
+				<key>modifiers</key>
+				<integer>0</integer>
+				<key>modifiersubtext</key>
+				<string></string>
+			</dict>
+			<dict>
+				<key>destinationuid</key>
+				<string>DBEADF7F-2168-4354-9DEE-59C35B46B460</string>
+				<key>modifiers</key>
+				<integer>524288</integer>
+				<key>modifiersubtext</key>
+				<string>Search Emails with Tag</string>
+			</dict>
+		</array>
 		<key>36ACFBC8-4D15-46AB-974A-855FE1B235D5</key>
 		<array>
 			<dict>
@@ -420,7 +439,7 @@ fi</string>
 				<key>includesystem</key>
 				<true/>
 				<key>keyword</key>
-				<string>.mtagged</string>
+				<string>.taggedmail</string>
 				<key>scopes</key>
 				<array>
 					<string>~/Library/Mail</string>
@@ -443,6 +462,84 @@ fi</string>
 			<key>version</key>
 			<integer>0</integer>
 		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>argumenttype</key>
+				<integer>1</integer>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>keyword</key>
+				<string>.taglist</string>
+				<key>runningsubtext</key>
+				<string>Loading List of Tags...</string>
+				<key>script</key>
+				<string>. workflowHandler.sh
+
+RANDOM=$(date +%s)
+QUERY="{query}"
+TAGLIST=$(defaults read com.apple.finder.plist ViewSettingsDictionary | awk 'NR%12==2'| grep -o '".*"' | sed 's/^.\(.*\).\{18\}$/\1/' | sort -f | grep "$QUERY")
+
+OLDIFS="$IFS"
+IFS='
+'
+
+for T in ${TAGLIST[*]}; do
+	addResult "${RANDOM}" "$T" "$T" "Search Files with Tag $T" "icon.png" "yes" ""
+done
+
+
+IFS="$OLDIFS"
+
+getXMLResults</string>
+				<key>title</key>
+				<string>Show List of all Available Tags</string>
+				<key>type</key>
+				<integer>0</integer>
+				<key>withspace</key>
+				<true/>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.input.scriptfilter</string>
+			<key>uid</key>
+			<string>15A2D89F-ABA0-4170-8A95-71E3057E8F47</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>/usr/bin/osascript -e "tell application \"Alfred 2\" to search \".tagged {query}\""</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>51B04FA3-154E-477F-8ECD-3142D89EBA0C</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
+		<dict>
+			<key>config</key>
+			<dict>
+				<key>escaping</key>
+				<integer>102</integer>
+				<key>script</key>
+				<string>/usr/bin/osascript -e "tell application \"Alfred 2\" to search \".taggedmail {query}\""</string>
+				<key>type</key>
+				<integer>0</integer>
+			</dict>
+			<key>type</key>
+			<string>alfred.workflow.action.script</string>
+			<key>uid</key>
+			<string>DBEADF7F-2168-4354-9DEE-59C35B46B460</string>
+			<key>version</key>
+			<integer>0</integer>
+		</dict>
 	</array>
 	<key>readme</key>
 	<string></string>
@@ -453,6 +550,11 @@ fi</string>
 			<key>ypos</key>
 			<real>450</real>
 		</dict>
+		<key>15A2D89F-ABA0-4170-8A95-71E3057E8F47</key>
+		<dict>
+			<key>ypos</key>
+			<real>670</real>
+		</dict>
 		<key>36ACFBC8-4D15-46AB-974A-855FE1B235D5</key>
 		<dict>
 			<key>ypos</key>
@@ -462,6 +564,11 @@ fi</string>
 		<dict>
 			<key>ypos</key>
 			<real>10</real>
+		</dict>
+		<key>51B04FA3-154E-477F-8ECD-3142D89EBA0C</key>
+		<dict>
+			<key>ypos</key>
+			<real>670</real>
 		</dict>
 		<key>5AA24E75-BB97-44E6-9102-CFF40D84984A</key>
 		<dict>
@@ -497,6 +604,11 @@ fi</string>
 		<dict>
 			<key>ypos</key>
 			<real>560</real>
+		</dict>
+		<key>DBEADF7F-2168-4354-9DEE-59C35B46B460</key>
+		<dict>
+			<key>ypos</key>
+			<real>790</real>
 		</dict>
 		<key>FDE325C7-AD1E-472C-9E55-3C1F8E021FC2</key>
 		<dict>
