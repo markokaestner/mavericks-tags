@@ -139,7 +139,7 @@ setPref "file" "{query}" 0
 			<key>config</key>
 			<dict>
 				<key>acceptsmulti</key>
-				<false/>
+				<true/>
 				<key>filetypes</key>
 				<array/>
 				<key>name</key>
@@ -478,7 +478,7 @@ fi</string>
 
 RANDOM=$(date +%s)
 QUERY="{query}"
-TAGLIST=$(/usr/bin/mdfind -0 "(kMDItemUserTags == '*')" |xargs -0 mdls -name kMDItemUserTags |grep '^    ' |cut -c5- |cut -d , -f 1 |sort -u |grep "$QUERY")
+TAGLIST=$(/usr/bin/mdfind -0 "(kMDItemUserTags == '*')" |xargs -0 mdls -name kMDItemUserTags |grep '^    ' |cut -c5- |cut -d , -f 1 |sort -u |grep "${QUERY}")
 
 OLDIFS="$IFS"
 IFS='
